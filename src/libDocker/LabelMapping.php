@@ -1,8 +1,8 @@
 <?php
 
-namespace Spatie\Docker;
+namespace libDocker;
 
-class EnvironmentMapping
+class LabelMapping
 {
     /** @var string $name */
     private $name;
@@ -19,6 +19,6 @@ class EnvironmentMapping
 
     public function __toString()
     {
-        return "-e {$this->name}={$this->value}";
+        return "-l {$this->name}={$this->value}";
     }
 }

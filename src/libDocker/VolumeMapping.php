@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Docker;
+namespace libDocker;
 
 class VolumeMapping
 {

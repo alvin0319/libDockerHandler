@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Docker;
+namespace libDocker;
 
 use Spatie\Macroable\Macroable;
 use Symfony\Component\Process\Exception\ProcessFailedException;

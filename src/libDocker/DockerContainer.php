@@ -1,8 +1,8 @@
 <?php
 
-namespace Spatie\Docker;
+namespace libDocker;
 
-use Spatie\Docker\Exceptions\CouldNotStartDockerContainer;
+use libDocker\Exceptions\CouldNotStartDockerContainer;
 use Spatie\Macroable\Macroable;
 use Symfony\Component\Process\Process;
 
@@ -16,16 +16,16 @@ class DockerContainer
 
     public $daemonize = true;
 
-    /** @var \Spatie\Docker\PortMapping[] */
+    /** @var PortMapping[] */
     public $portMappings = [];
 
-    /** @var \Spatie\Docker\EnvironmentMapping[] */
+    /** @var EnvironmentMapping[] */
     public $environmentMappings = [];
 
-    /** @var array \Spatie\Docker\VolumeMapping[] */
+    /** @var array VolumeMapping[] */
     public $volumeMappings = [];
 
-    /** @var \Spatie\Docker\LabelMapping[] */
+    /** @var LabelMapping[] */
     public $labelMappings = [];
 
     public $cleanUpAfterExit = true;
