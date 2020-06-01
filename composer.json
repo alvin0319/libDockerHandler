@@ -18,7 +18,13 @@
             "email": "freek@spatie.be",
             "homepage": "https://spatie.be",
             "role": "Developer"
-        }
+        },
+		{
+			"name": "jasonwynn10",
+			"email": "jasonwynn10@me.com",
+			"homepage": "https://jasonwynn10.com",
+			"role": "Developer"
+		}
     ],
     "require": {
         "php": "7.3.*",
