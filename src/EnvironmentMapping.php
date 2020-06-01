@@ -4,9 +4,11 @@ namespace Spatie\Docker;
 
 class EnvironmentMapping
 {
-    private string $name;
+    /** @var string $name */
+    private $name;
 
-    private string $value;
+    /** @var string $value */
+    private $value;
 
     public function __construct(string $name, string $value)
     {

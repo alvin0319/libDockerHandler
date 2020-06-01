@@ -4,9 +4,11 @@ namespace Spatie\Docker;
 
 class VolumeMapping
 {
-    private string $pathOnHost;
+    /** @var string $pathOnHost */
+    private $pathOnHost;
 
-    private string $pathOnDocker;
+    /** @var string $pathOnDocker */
+    private $pathOnDocker;
 
     public function __construct(string $pathOnHost, string $pathOnDocker)
     {

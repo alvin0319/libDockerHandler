@@ -10,27 +10,27 @@ class DockerContainer
 {
     use Macroable;
 
-    public string $image = '';
+    public $image = '';
 
-    public string $name = '';
+    public $name = '';
 
-    public bool $daemonize = true;
+    public $daemonize = true;
 
     /** @var \Spatie\Docker\PortMapping[] */
-    public array $portMappings = [];
+    public $portMappings = [];
 
     /** @var \Spatie\Docker\EnvironmentMapping[] */
-    public array $environmentMappings = [];
+    public $environmentMappings = [];
 
     /** @var array \Spatie\Docker\VolumeMapping[] */
-    public array $volumeMappings = [];
+    public $volumeMappings = [];
 
     /** @var \Spatie\Docker\LabelMapping[] */
-    public array $labelMappings = [];
+    public $labelMappings = [];
 
-    public bool $cleanUpAfterExit = true;
+    public $cleanUpAfterExit = true;
 
-    public bool $stopOnDestruct = false;
+    public $stopOnDestruct = false;
 
     public function __construct(string $image, string $name = '')
     {

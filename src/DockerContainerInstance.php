@@ -10,11 +10,14 @@ class DockerContainerInstance
 {
     use Macroable;
 
-    private DockerContainer $config;
+    /** @var DockerContainer $config */
+    private $config;
 
-    private string $dockerIdentifier;
+    /** @var string $dockerIdentifier */
+    private $dockerIdentifier;
 
-    private string $name;
+    /** @var string $name */
+    private $name;
 
     public function __construct(
         DockerContainer $config,
