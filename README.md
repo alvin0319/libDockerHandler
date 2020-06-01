@@ -190,31 +190,6 @@ $containerInstance = DockerContainer::create($imageName)->start();
 $containerInstace->whoAmI(); // returns of name of user in the docker container
 ````
 
-### Testing
-
-Before running the tests for the first time, you must build the `spatie/docker` container with:
-
-````bash
-composer build-docker
-````
-
-Next, you can run the tests with:
-``` bash
-composer test
-```
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security
-
-If you discover any security related issues, please email freek@spatie.be instead of using the issue tracker.
-
 ## Credits
 
 - [Ruben Van Assche](https://github.com/rubenvanassche)
