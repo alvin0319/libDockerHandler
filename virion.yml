@@ -1,0 +1,6 @@
+name: libDockerHandler
+version: 0.0.1
+antigen: ""
+php:
+ - 7.3
+author: "jasonwynn10"
