@@ -17,6 +17,16 @@ class PortMapping
         $this->portOnDocker = $portOnDocker;
     }
 
+    public function getPortOnHost()
+    {
+        return $this->portOnHost;
+    }
+
+    public function getPortOnDocker()
+    {
+        return $this->portOnDocker;
+    }
+
     public function __toString()
     {
         return "-p {$this->portOnHost}:{$this->portOnDocker}";
