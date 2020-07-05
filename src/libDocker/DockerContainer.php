@@ -22,7 +22,7 @@ class DockerContainer
     /** @var EnvironmentMapping[] */
     public $environmentMappings = [];
 
-    /** @var array VolumeMapping[] */
+    /** @var VolumeMapping[] */
     public $volumeMappings = [];
 
     /** @var LabelMapping[] */
