@@ -2,6 +2,8 @@
 
 namespace libDocker;
 
+ComposerDecoy::load();
+
 use libDocker\Exceptions\CouldNotStartDockerContainer;
 use Spatie\Macroable\Macroable;
 use Symfony\Component\Process\Process;

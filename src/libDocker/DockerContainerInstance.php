@@ -2,6 +2,8 @@
 
 namespace libDocker;
 
+ComposerDecoy::load();
+
 use Spatie\Macroable\Macroable;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;

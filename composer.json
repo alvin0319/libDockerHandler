@@ -1,5 +1,5 @@
 {
-    "name": "CTMCentral/libDocker",
+    "name": "ctmcentral/libdocker",
     "description": " Fork of spatie/docker -- Run a docker container in your PHPUnit tests",
     "keywords": [
         "docker"

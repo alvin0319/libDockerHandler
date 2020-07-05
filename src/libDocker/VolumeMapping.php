@@ -29,6 +29,6 @@ class VolumeMapping
 
     public function __toString()
     {
-        return "-v {$this->pathOnHost}:{$this->pathOnDocker}";
+        return "-v \"{$this->pathOnHost}:{$this->pathOnDocker}\"";
     }
 }
