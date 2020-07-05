@@ -17,6 +17,16 @@ class LabelMapping
         $this->value = $value;
     }
 
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	public function getValue()
+	{
+		return $this->value;
+	}
+
     public function __toString()
     {
         return "-l {$this->name}={$this->value}";

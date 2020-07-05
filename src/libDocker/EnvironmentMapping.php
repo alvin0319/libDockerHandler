@@ -17,6 +17,16 @@ class EnvironmentMapping
         $this->value = $value;
     }
 
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	public function getValue()
+	{
+		return $this->value;
+	}
+
     public function __toString()
     {
         return "-e {$this->name}={$this->value}";

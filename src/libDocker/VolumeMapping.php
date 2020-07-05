@@ -17,6 +17,16 @@ class VolumeMapping
         $this->pathOnDocker = $pathOnDocker;
     }
 
+    public function getPathOnHost()
+    {
+        return $this->pathOnHost;
+    }
+
+    public function getPathOnDocker()
+    {
+        return $this->pathOnDocker;
+    }
+
     public function __toString()
     {
         return "-v {$this->pathOnHost}:{$this->pathOnDocker}";
