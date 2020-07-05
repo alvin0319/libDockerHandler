@@ -175,6 +175,7 @@ class DockerContainer
 
         if ($this->daemonize) {
             $extraOptions[] = '-d';
+	        $extraOptions[] = '-t';
         }
 
         if ($this->cleanUpAfterExit) {
