@@ -88,9 +88,9 @@ class DockerContainer
         return $this;
     }
 
-    public function mapPort(int $portOnHost, $portOnDocker): self
+    public function mapPort(int $portOnHost, int $portOnDocker, string $protocol): self
     {
-        $this->portMappings[] = new PortMapping($portOnHost, $portOnDocker);
+        $this->portMappings[] = new PortMapping($portOnHost, $portOnDocker, $protocol);
 
         return $this;
     }
