@@ -1,8 +1,8 @@
 <?php
 
-namespace libDocker;
+namespace libDocker\containers;
 
-ComposerDecoy::load();
+\libDocker\ComposerDecoy::load();
 
 use Spatie\Macroable\Macroable;
 use Symfony\Component\Process\Exception\ProcessFailedException;

@@ -1,9 +1,9 @@
 <?php
 
-namespace libDocker\Exceptions;
+namespace libDocker\containers\Exceptions;
 
 use Exception;
-use libDocker\DockerContainer;
+use libDocker\containers\DockerContainer;
 use Symfony\Component\Process\Process;
 
 class CouldNotStartDockerContainer extends Exception

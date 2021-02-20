@@ -1,6 +1,6 @@
 <?php
 
-namespace libDocker;
+namespace libDocker\containers;
 
 class PortMapping
 {
