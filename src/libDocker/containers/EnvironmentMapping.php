@@ -29,6 +29,6 @@ class EnvironmentMapping
 
     public function __toString()
     {
-        return "-e {$this->name}={$this->value}";
+        return "-e {$this->name}=\"{$this->value}\"";
     }
 }
