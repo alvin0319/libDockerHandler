@@ -131,6 +131,7 @@ class DockerContainer
     public function start(): DockerContainerInstance
     {
         $command = $this->getStartCommand();
+        var_dump($command);
 
         $process = Process::fromShellCommandline($command);
 
@@ -170,7 +171,7 @@ class DockerContainer
         }
 
         if ($this->name !== '') {
-            $extraOptions[] = "--name {$this->name}";
+            $extraOptions[] = "--name \"{$this->name}\"";
         }
 
         if ($this->daemonize) {
