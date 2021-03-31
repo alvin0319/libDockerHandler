@@ -2,33 +2,28 @@
 
 namespace libDocker\containers;
 
-class LabelMapping
-{
-    /** @var string $name */
-    private $name;
+class LabelMapping{
+	/** @var string $name */
+	private $name;
 
-    /** @var string $value */
-    private $value;
+	/** @var string $value */
+	private $value;
 
-    public function __construct(string $name, string $value)
-    {
-        $this->name = $name;
+	public function __construct(string $name, string $value){
+		$this->name = $name;
 
-        $this->value = $value;
-    }
+		$this->value = $value;
+	}
 
-	public function getName()
-	{
+	public function getName(){
 		return $this->name;
 	}
 
-	public function getValue()
-	{
+	public function getValue(){
 		return $this->value;
 	}
 
-    public function __toString()
-    {
-        return "-l {$this->name}={$this->value}";
-    }
+	public function __toString(){
+		return "-l {$this->name}={$this->value}";
+	}
 }

@@ -2,186 +2,175 @@
 
 namespace libDocker\containers;
 
-\libDocker\ComposerDecoy::load();
-
+use libDocker\ComposerDecoy;
 use libDocker\containers\Exceptions\CouldNotStartDockerContainer;
+use pocketmine\utils\Utils;
 use Spatie\Macroable\Macroable;
 use Symfony\Component\Process\Process;
 
-class DockerContainer
-{
-    use Macroable;
+ComposerDecoy::load();
 
-    public $image = '';
+class DockerContainer{
+	use Macroable;
 
-    public $name = '';
+	public $image = '';
 
-    public $daemonize = true;
+	public $name = '';
 
-    /** @var PortMapping[] */
-    public $portMappings = [];
+	public $daemonize = true;
 
-    /** @var EnvironmentMapping[] */
-    public $environmentMappings = [];
+	/** @var PortMapping[] */
+	public $portMappings = [];
 
-    /** @var VolumeMapping[] */
-    public $volumeMappings = [];
+	/** @var EnvironmentMapping[] */
+	public $environmentMappings = [];
 
-    /** @var LabelMapping[] */
-    public $labelMappings = [];
+	/** @var VolumeMapping[] */
+	public $volumeMappings = [];
 
-    public $cleanUpAfterExit = true;
+	/** @var LabelMapping[] */
+	public $labelMappings = [];
 
-    public $stopOnDestruct = false;
+	public $cleanUpAfterExit = true;
 
-    public function __construct(string $image, string $name = '')
-    {
-        $this->image = $image;
+	public $stopOnDestruct = false;
 
-        $this->name = $name;
-    }
+	public function __construct(string $image, string $name = ''){
+		$this->image = $image;
 
-    public static function create(...$args): self
-    {
-        return new static(...$args);
-    }
+		$this->name = $name;
+	}
 
-    public function image(string $image): self
-    {
-        $this->image = $image;
+	public static function create(...$args) : self{
+		return new static(...$args);
+	}
 
-        return $this;
-    }
+	public function image(string $image) : self{
+		$this->image = $image;
 
-    public function name(string $name): self
-    {
-        $this->name = $name;
+		return $this;
+	}
 
-        return $this;
-    }
+	public function name(string $name) : self{
+		$this->name = $name;
 
-    public function daemonize(bool $daemonize = true): self
-    {
-        $this->daemonize = $daemonize;
+		return $this;
+	}
 
-        return $this;
-    }
+	public function daemonize(bool $daemonize = true) : self{
+		$this->daemonize = $daemonize;
 
-    public function doNotDaemonize(): self
-    {
-        $this->daemonize = false;
+		return $this;
+	}
 
-        return $this;
-    }
+	public function doNotDaemonize() : self{
+		$this->daemonize = false;
 
-    public function cleanUpAfterExit(bool $cleanUpAfterExit): self
-    {
-        $this->cleanUpAfterExit = $cleanUpAfterExit;
+		return $this;
+	}
 
-        return $this;
-    }
+	public function cleanUpAfterExit(bool $cleanUpAfterExit) : self{
+		$this->cleanUpAfterExit = $cleanUpAfterExit;
 
-    public function doNotCleanUpAfterExit(): self
-    {
-        $this->cleanUpAfterExit = false;
+		return $this;
+	}
 
-        return $this;
-    }
+	public function doNotCleanUpAfterExit() : self{
+		$this->cleanUpAfterExit = false;
 
-    public function mapPort(int $portOnHost, int $portOnDocker, string $protocol): self
-    {
-        $this->portMappings[] = new PortMapping($portOnHost, $portOnDocker, $protocol);
+		return $this;
+	}
 
-        return $this;
-    }
+	public function mapPort(int $portOnHost, int $portOnDocker, string $protocol) : self{
+		$this->portMappings[] = new PortMapping($portOnHost, $portOnDocker, $protocol);
 
-    public function setEnvironmentVariable(string $envName, string $envValue): self
-    {
-        $this->environmentMappings[] = new EnvironmentMapping($envName, $envValue);
+		return $this;
+	}
 
-        return $this;
-    }
+	public function setEnvironmentVariable(string $envName, string $envValue) : self{
+		$this->environmentMappings[] = new EnvironmentMapping($envName, $envValue);
 
-    public function setVolume(string $pathOnHost, string $pathOnDocker): self
-    {
-        $this->volumeMappings[] = new VolumeMapping($pathOnHost, $pathOnDocker);
+		return $this;
+	}
 
-        return $this;
-    }
+	public function setVolume(string $pathOnHost, string $pathOnDocker) : self{
+		$this->volumeMappings[] = new VolumeMapping($pathOnHost, $pathOnDocker);
 
-    public function setLabel(string $labelName, string $labelValue): self
-    {
-        $this->labelMappings[] = new LabelMapping($labelName, $labelValue);
+		return $this;
+	}
 
-        return $this;
-    }
+	public function setLabel(string $labelName, string $labelValue) : self{
+		$this->labelMappings[] = new LabelMapping($labelName, $labelValue);
 
-    public function stopOnDestruct(bool $stopOnDestruct = true): self
-    {
-        $this->stopOnDestruct = $stopOnDestruct;
+		return $this;
+	}
 
-        return $this;
-    }
+	public function stopOnDestruct(bool $stopOnDestruct = true) : self{
+		$this->stopOnDestruct = $stopOnDestruct;
 
-    public function getStartCommand(): string
-    {
-        return "docker run {$this->getExtraOptions()} {$this->image}";
-    }
+		return $this;
+	}
 
-    public function start(): DockerContainerInstance
-    {
-        $command = $this->getStartCommand();
+	public function getStartCommand() : string{
+		$command = "docker run {$this->getExtraOptions()} {$this->image}";
+		if(Utils::getOS(true) === "win"){
+			$command = "powershell -command \"{$command}\"";
+		}
+		return $command;
+	}
 
-        $process = Process::fromShellCommandline($command);
+	public function start() : DockerContainerInstance{
+		$command = $this->getStartCommand();
 
-        $process->run();
+		$process = Process::fromShellCommandline($command);
 
-        if (! $process->isSuccessful()) {
-            throw CouldNotStartDockerContainer::processFailed($this, $process);
-        }
+		$process->run();
 
-        $dockerIdentifier = $process->getOutput();
+		if(!$process->isSuccessful()){
+			throw CouldNotStartDockerContainer::processFailed($this, $process);
+		}
 
-        return new DockerContainerInstance(
-            $this,
-            $dockerIdentifier,
-            $this->name,
-        );
-    }
+		$dockerIdentifier = $process->getOutput();
 
-    protected function getExtraOptions(): string
-    {
-        $extraOptions = [];
+		return new DockerContainerInstance(
+			$this,
+			$dockerIdentifier,
+			$this->name,
+		);
+	}
 
-        if (count($this->portMappings)) {
-            $extraOptions[] = implode(' ', $this->portMappings);
-        }
+	protected function getExtraOptions() : string{
+		$extraOptions = [];
 
-        if (count($this->environmentMappings)) {
-            $extraOptions[] = implode(' ', $this->environmentMappings);
-        }
+		if(count($this->portMappings)){
+			$extraOptions[] = implode(' ', $this->portMappings);
+		}
 
-        if (count($this->volumeMappings)) {
-            $extraOptions[] = implode(' ', $this->volumeMappings);
-        }
+		if(count($this->environmentMappings)){
+			$extraOptions[] = implode(' ', $this->environmentMappings);
+		}
 
-        if (count($this->labelMappings)) {
-            $extraOptions[] = implode(' ', $this->labelMappings);
-        }
+		if(count($this->volumeMappings)){
+			$extraOptions[] = implode(' ', $this->volumeMappings);
+		}
 
-        if ($this->name !== '') {
-            $extraOptions[] = "--name \"{$this->name}\"";
-        }
+		if(count($this->labelMappings)){
+			$extraOptions[] = implode(' ', $this->labelMappings);
+		}
 
-        if ($this->daemonize) {
-            $extraOptions[] = '-d';
-	        $extraOptions[] = '-t';
-        }
+		if($this->name !== ''){
+			$extraOptions[] = "--name \"{$this->name}\"";
+		}
 
-        if ($this->cleanUpAfterExit) {
-            $extraOptions[] = '--rm';
-        }
+		if($this->daemonize){
+			$extraOptions[] = '-itd';
+			//$extraOptions[] = '-t';
+		}
 
-        return implode(' ', $extraOptions);
-    }
+		if($this->cleanUpAfterExit){
+			$extraOptions[] = '--rm';
+		}
+
+		return implode(' ', $extraOptions);
+	}
 }

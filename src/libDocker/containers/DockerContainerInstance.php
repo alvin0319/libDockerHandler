@@ -2,116 +2,107 @@
 
 namespace libDocker\containers;
 
-\libDocker\ComposerDecoy::load();
-
+use libDocker\ComposerDecoy;
 use Spatie\Macroable\Macroable;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-class DockerContainerInstance
-{
-    use Macroable;
+ComposerDecoy::load();
 
-    /** @var DockerContainer $config */
-    private $config;
+class DockerContainerInstance{
+	use Macroable;
 
-    /** @var string $dockerIdentifier */
-    private $dockerIdentifier;
+	/** @var DockerContainer $config */
+	private $config;
 
-    /** @var string $name */
-    private $name;
+	/** @var string $dockerIdentifier */
+	private $dockerIdentifier;
 
-    public function __construct(
-        DockerContainer $config,
-        string $dockerIdentifier,
-        string $name
-    ) {
-        $this->config = $config;
+	/** @var string $name */
+	private $name;
 
-        $this->dockerIdentifier = $dockerIdentifier;
+	public function __construct(
+		DockerContainer $config,
+		string $dockerIdentifier,
+		string $name
+	){
+		$this->config = $config;
 
-        $this->name = $name;
-    }
+		$this->dockerIdentifier = $dockerIdentifier;
 
-    public function __destruct()
-    {
-        if ($this->config->stopOnDestruct) {
-            $this->stop();
-        }
-    }
+		$this->name = $name;
+	}
 
-    public function stop(): Process
-    {
-        $fullCommand = "docker stop {$this->getShortDockerIdentifier()}";
+	public function __destruct(){
+		if($this->config->stopOnDestruct){
+			$this->stop();
+		}
+	}
 
-        $process = Process::fromShellCommandline($fullCommand);
+	public function stop() : Process{
+		$fullCommand = "docker stop {$this->getShortDockerIdentifier()}";
 
-        $process->run();
+		$process = Process::fromShellCommandline($fullCommand);
 
-        return $process;
-    }
+		$process->run();
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
+		return $process;
+	}
 
-    public function getConfig(): DockerContainer
-    {
-        return $this->config;
-    }
+	public function getName() : string{
+		return $this->name;
+	}
 
-    public function getDockerIdentifier(): string
-    {
-        return $this->dockerIdentifier;
-    }
+	public function getConfig() : DockerContainer{
+		return $this->config;
+	}
 
-    public function getShortDockerIdentifier(): string
-    {
-        return substr($this->dockerIdentifier, 0, 12);
-    }
+	public function getDockerIdentifier() : string{
+		return $this->dockerIdentifier;
+	}
 
-    /**
-     * @param string|array $command
-     *
-     * @return \Symfony\Component\Process\Process
-     */
-    public function execute($command): Process
-    {
-        if (is_array($command)) {
-            $command = implode(';', $command);
-        }
+	public function getShortDockerIdentifier() : string{
+		return substr($this->dockerIdentifier, 0, 12);
+	}
 
-        $fullCommand = "echo \"{$command}\" | docker exec --interactive {$this->getShortDockerIdentifier()} bash -";
+	/**
+	 * @param string|array $command
+	 *
+	 * @return Process
+	 */
+	public function execute($command) : Process{
+		if(is_array($command)){
+			$command = implode(';', $command);
+		}
 
-        $process = Process::fromShellCommandline($fullCommand);
+		$fullCommand = "echo \"{$command}\" | docker exec --interactive {$this->getShortDockerIdentifier()} bash -";
 
-        $process->run();
+		$process = Process::fromShellCommandline($fullCommand);
 
-        return $process;
-    }
+		$process->run();
 
-    public function addPublicKey(string $pathToPublicKey, string $pathToAuthorizedKeys = '/root/.ssh/authorized_keys'): self
-    {
-        $publicKeyContents = trim(file_get_contents($pathToPublicKey));
+		return $process;
+	}
 
-        $this->execute('echo \''.$publicKeyContents.'\' >> '.$pathToAuthorizedKeys);
+	public function addPublicKey(string $pathToPublicKey, string $pathToAuthorizedKeys = '/root/.ssh/authorized_keys') : self{
+		$publicKeyContents = trim(file_get_contents($pathToPublicKey));
 
-        $this->execute("chmod 600 {$pathToAuthorizedKeys}");
-        $this->execute("chown root:root {$pathToAuthorizedKeys}");
+		$this->execute('echo \'' . $publicKeyContents . '\' >> ' . $pathToAuthorizedKeys);
 
-        return $this;
-    }
+		$this->execute("chmod 600 {$pathToAuthorizedKeys}");
+		$this->execute("chown root:root {$pathToAuthorizedKeys}");
 
-    public function addFiles(string $fileOrDirectoryOnHost, string $pathInContainer): self
-    {
-        $process = Process::fromShellCommandline("docker cp {$fileOrDirectoryOnHost} {$this->getShortDockerIdentifier()}:{$pathInContainer}");
-        $process->run();
+		return $this;
+	}
 
-        if (! $process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
+	public function addFiles(string $fileOrDirectoryOnHost, string $pathInContainer) : self{
+		$process = Process::fromShellCommandline("docker cp {$fileOrDirectoryOnHost} {$this->getShortDockerIdentifier()}:{$pathInContainer}");
+		$process->run();
 
-        return $this;
-    }
+		if(!$process->isSuccessful()){
+			throw new ProcessFailedException($process);
+		}
+
+		return $this;
+	}
 }

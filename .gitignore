@@ -1,0 +1,6 @@
+# composer phar
+composer.phar
+# Composer cache
+composer.lock
+# Composer libraries
+vendor/
